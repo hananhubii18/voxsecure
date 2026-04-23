@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoteSecure — Digital Democracy Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>  
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo">Vote<span>Secure</span></div>
+  <nav>
+    <ul class="nav-tabs">
+      <li class="nav-tab active" data-page="home">Home</li>
+      <li class="nav-tab" data-page="register">Register</li>
+      <li class="nav-tab" data-page="vote">Vote</li>
+      <li class="nav-tab" data-page="results">Results</li>
+      <li class="nav-tab" data-page="admin-login" id="adminNavTab" style="color:#c0694a;border-left-color:#3a1a1a;">🔐 Admin</li>
+    </ul>
+  </nav>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="admin-session-pill" id="adminSessionPill" title="Admin logged in — click to log out">
+      <span class="admin-session-dot"></span> Admin Active
+    </div>
+    <div class="header-badge">2026 Election</div>
+  </div>
+</header>
+
+<!-- STEPS BAR -->
+<div class="steps-bar" id="stepsBar">
+  <div class="step active" id="step1"><div class="step-dot">1</div> Register</div>
+  <div class="step-line" id="line1"></div>
+  <div class="step" id="step2"><div class="step-dot">2</div> Vote</div>
+  <div class="step-line" id="line2"></div>
+  <div class="step" id="step3"><div class="step-dot">3</div> Results</div>
+</div>
+
+<!-- ============ HOME PAGE ============ -->
+<section class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-kicker">General Election 2026 — Simulated Demo</div>
+    <h1>Your Voice.<br><span>Your Vote.</span></h1>
+    <p>Experience a secure, transparent digital democracy platform. Register, cast your vote, and watch live results update in real time.</p>
+    <button class="btn-primary" id="startBtn">Begin Registration →</button>
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-num" id="totalVoters">0</div><div class="stat-label">Votes Cast</div></div>
+      <div class="stat"><div class="stat-num">5</div><div class="stat-label">Candidates</div></div>
+      <div class="stat"><div class="stat-num">1</div><div class="stat-label">Constituency</div></div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="disclaimer">
+      <div class="disclaimer-icon">⚠️</div>
+      <div class="disclaimer-content">
+        <h4>Front-End Simulation Notice</h4>
+        <p>This project is a <strong>front-end simulation only</strong>. Voter data and votes are stored in your browser's <strong>LocalStorage</strong> and are not transmitted anywhere. A real-world voting system would require a secure backend, encrypted database, server-side authentication, audit trails, and compliance with election laws. This demo is for educational/portfolio purposes only.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REGISTER PAGE ============ -->
+<section class="page" id="page-register">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-number">01</div>
+      <div><div class="section-title">Voter Registration</div></div>
+    </div>
+    <div class="section-divider"></div>
+
+    <div class="reg-layout">
+      <div class="form-panel">
+        <h3>Personal Details</h3>
+        <div class="field">
+          <label>Full Name *</label>
+          <input type="text" id="fullName" placeholder="Enter your full legal name">
+          <div class="field-error" id="err-name">Full name is required.</div>
+        </div>
+        <div class="field">
+          <label>Date of Birth *</label>
+          <input type="date" id="dob">
+          <div class="field-error" id="err-dob">You must be at least 18 years old to vote.</div>
+        </div>
+        <div class="field">
+          <label>Voter ID Number *</label>
+          <input type="text" id="voterId" placeholder="e.g. ABC1234567" maxlength="10" style="text-transform:uppercase;">
+          <div class="voter-id-hint">Format: 3 letters + 7 digits (e.g. ABC1234567)</div>
+          <div class="field-error" id="err-voterId">Voter ID must be 3 uppercase letters followed by 7 digits.</div>
+        </div>
+        <div class="field">
+          <label>Mobile Number *</label>
+          <input type="tel" id="mobile" placeholder="10-digit mobile number" maxlength="10">
+          <div class="field-error" id="err-mobile">Valid 10-digit mobile number required.</div>
+        </div>
+        <div class="field">
+          <label>Email Address *</label>
+          <input type="email" id="email" placeholder="your@email.com" required>
+          <div class="voter-id-hint">Each email can be used only once</div>
+          <div class="field-error" id="err-email">Valid email address required.</div>
+        </div>
+        <div class="field">
+          <label>Password *</label>
+          <input type="password" id="password" placeholder="Min 9 chars (A-Z, a-z, 0-9, @$#)" required minlength="9">
+          <div class="field-error" id="err-password">
+            Password must be at least 9 characters and include uppercase, lowercase, number, and special character.
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Confirm Password *</label>
+          <input type="password" id="confirmPassword" placeholder="Re-enter password" required>
+          <div class="field-error" id="err-confirmPassword">
+            Passwords do not match.
+          </div>
+        </div>
+        <button class="btn-primary" id="registerBtn" style="width:100%;clip-path:none;padding:14px;">
+          Complete Registration →
+        </button>
+      </div>
+
+      <div class="info-panel">
+        <h3>Requirements</h3>
+        <ul class="info-list">
+          <li>Voter must be a citizen aged 18 or above</li>
+          <li>Valid Voter ID (3 letters + 7 digits) is mandatory</li>
+          <li>Each Voter ID can be used to vote only once</li>
+          <li>All fields are required and validated</li>
+          <li>Your data stays in your browser — never sent</li>
+          <li>Mobile &amp; email used for confirmation only</li>
+        </ul>
+        <div class="security-badge">🔒 256-bit simulated encryption active</div>
+        <div style="margin-top:1.5rem;padding:1rem;background:#111;border:1px solid #1e1e24;">
+          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:#555;margin-bottom:0.5rem;">Election Details</div>
+          <div style="font-size:0.85rem;color:#aaa;line-height:1.7;">
+            <b style="color:var(--gold)">Constituency:</b> Srinagar<br>
+            <b style="color:var(--gold)">Date:</b> April 22, 2026<br>
+            <b style="color:var(--gold)">Type:</b> Parliamentary
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VOTE PAGE ============ -->
+<section class="page" id="page-vote">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-number">02</div>
+      <div><div class="section-title">Cast Your Vote</div></div>
+    </div>
+    <div class="section-divider"></div>
+
+    <div class="election-meta">
+      <div>
+        <div class="election-title">Srinagar Constituency</div>
+        <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:1px;color:#888;margin-top:2px;">General Election 2026 — Select ONE candidate</div>
+      </div>
+      <div class="voter-id-display">Voter: <span id="voterNameDisplay">—</span> &nbsp;|&nbsp; ID: <span id="voterIdDisplay">—</span></div>
+    </div>
+
+    <div class="already-voted-banner" id="alreadyVotedBanner">
+      <h3>✅ Vote Already Cast</h3>
+      <p id="alreadyVotedText">You have already voted in this election. Duplicate voting is not permitted.</p>
+    </div>
+
+    <div class="candidates-grid" id="candidatesGrid"></div>
+
+    <div class="disclaimer">
+      <div class="disclaimer-icon">ℹ️</div>
+      <div class="disclaimer-content">
+        <h4>Voting Instructions</h4>
+        <p>Select your preferred candidate by pressing the <strong>Vote</strong> button on their card. Once confirmed, your vote cannot be changed. Each registered voter may vote exactly once.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESULTS PAGE ============ -->
+<section class="page" id="page-results">
+  <div class="results-header">
+    <h2>Live Results</h2>
+    <p>Srinagar Constituency — General Election 2026</p>
+  </div>
+  <div class="container">
+
+    <div class="winner-card" id="winnerCard">
+      <div class="winner-crown">👑</div>
+      <div class="winner-label">Current Leader</div>
+      <div class="winner-name" id="winnerName">No votes yet</div>
+      <div class="winner-votes" id="winnerVotes"></div>
+    </div>
+
+    <!-- ★ UNIQUE ELEMENT: Live Turnout Donut Chart + Candidate Bar Chart ★ -->
+    <div class="chart-section">
+      <!-- Donut: Turnout -->
+      <div class="chart-card">
+        <div class="chart-card-title">
+          Voter Turnout
+          <span class="badge-unique">★ Unique</span>
+        </div>
+        <div class="donut-wrap">
+          <div class="donut-svg-wrap">
+            <svg class="donut-svg" width="140" height="140" viewBox="0 0 140 140" id="donutSvg">
+              <circle class="donut-bg" cx="70" cy="70" r="51"/>
+              <!-- Voted segment -->
+              <circle class="donut-seg" id="donutVoted" cx="70" cy="70" r="51"
+                stroke="#c9a84c"
+                stroke-dasharray="0 320.44"
+                stroke-dashoffset="0"/>
+              <!-- Registered-not-voted segment -->
+              <circle class="donut-seg" id="donutRegistered" cx="70" cy="70" r="51"
+                stroke="#1b4f8a"
+                stroke-dasharray="0 320.44"
+                stroke-dashoffset="0"/>
+            </svg>
+            <div class="donut-center-text">
+              <div class="donut-pct" id="donutPct">0%</div>
+              <div class="donut-sub">Turnout</div>
+            </div>
+          </div>
+          <div class="donut-legend">
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot" style="background:#c9a84c;"></div>
+              <span class="donut-legend-label">Voted</span>
+              <span class="donut-legend-val" id="legendVoted">0</span>
+            </div>
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot" style="background:#1b4f8a;"></div>
+              <span class="donut-legend-label">Registered</span>
+              <span class="donut-legend-val" id="legendRegistered">0</span>
+            </div>
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot" style="background:var(--cream);border:1px solid var(--border);"></div>
+              <span class="donut-legend-label">Not Yet Voted</span>
+              <span class="donut-legend-val" id="legendPending">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bar Chart: Candidate Share -->
+      <div class="chart-card">
+        <div class="chart-card-title">Vote Share</div>
+        <ul class="bar-chart-list" id="barChartList"></ul>
+      </div>
+    </div>
+    <!-- END UNIQUE ELEMENT -->
+
+    <div id="resultsList"></div>
+
+    <div class="total-count">
+      <div class="num" id="resultTotal">0</div>
+      <div class="lbl">Total Votes Recorded</div>
+    </div>
+
+    <!-- Admin dashboard — visible ONLY when admin is logged in -->
+    <div class="admin-dashboard" id="adminDashboard">
+      <div class="admin-dashboard-left">
+        <div class="admin-dashboard-icon">🔐</div>
+        <div class="admin-dashboard-text">
+          <h4>Admin Control Panel</h4>
+          <p>Logged in as administrator · Full election control active</p>
+        </div>
+      </div>
+      <button class="admin-reset-btn" id="resetElectionBtn">
+        <span class="lock-icon">⚠</span> Reset Election
+      </button>
+    </div>
+
+    <div style="text-align:center;margin-bottom:3rem;">
+      <button class="btn-primary" id="refreshResultsBtn" style="clip-path:none;">↻ Refresh Results</button>
+    </div>
+
+    <div class="disclaimer">
+      <div class="disclaimer-icon">⚠️</div>
+      <div class="disclaimer-content">
+        <h4>Simulation Disclaimer</h4>
+        <p>Results shown are based on votes stored in your browser's LocalStorage. This is a <strong>front-end simulation</strong> only — no real election data is involved. Actual elections use secured backend infrastructure, independent observers, paper trails, and cryptographic verification systems.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ADMIN LOGIN PAGE ============ -->
+<section class="page" id="page-admin-login">
+  <div class="admin-login-wrap">
+    <div class="admin-login-card">
+      <div class="admin-login-header">
+        <div class="admin-login-icon">🔐</div>
+        <h2>Admin Portal</h2>
+        <p>Restricted Access — Authorised Personnel Only</p>
+      </div>
+      <div class="admin-login-body">
+        <div class="admin-login-error" id="adminLoginErr">
+          ✕ &nbsp;Incorrect credentials. Access denied.
+        </div>
+        <div class="admin-login-field">
+          <label>Admin Username</label>
+          <input type="text" id="adminLoginUser" placeholder="Enter username" autocomplete="off">
+        </div>
+        <div class="admin-login-field">
+          <label>Admin Password</label>
+          <input type="password" id="adminLoginPass" placeholder="Enter password" autocomplete="off">
+        </div>
+        <button class="btn-admin-login" id="adminLoginBtn">Authenticate &amp; Enter →</button>
+        <div class="admin-hint-box">
+          Demo credentials &nbsp;—&nbsp;
+          username: <strong>admin</strong> &nbsp;/&nbsp; password: <strong>admin123</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VOTE CONFIRM MODAL ============ -->
+<div class="modal-overlay" id="voteModal">
+  <div class="modal">
+    <div class="modal-stripe"></div>
+    <div class="modal-body">
+      <div class="modal-icon warning">🗳️</div>
+      <h2>Confirm Your Vote</h2>
+      <p>You are about to cast your vote for <strong id="modalCandidateName">—</strong> of the <em id="modalPartyName">—</em>. This action is <strong>irreversible</strong>. Are you sure?</p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="cancelVoteBtn">Cancel</button>
+        <button class="btn-confirm" id="confirmVoteBtn">Confirm Vote</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toastIcon">✓</div>
+  <div class="toast-text">
+    <div class="toast-title" id="toastTitle">Success</div>
+    <div class="toast-msg" id="toastMsg"></div>
+  </div>
+</div>
+<audio id="voteSound" src="ping.mp3" preload="auto"></audio>
+
+<!-- FOOTER -->
+<footer>
+  <span>VoteSecure</span> — Front-End Simulation &nbsp;|&nbsp; Built for Educational Purposes &nbsp;|&nbsp; Data stored locally &nbsp;|&nbsp; <span>2026</span>
+</footer>
+</body>
+</html>
